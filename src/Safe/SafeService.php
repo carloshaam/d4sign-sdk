@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Services;
+namespace D4Sign\Safe;
 
 use D4Sign\Contracts\SafeServiceInterface;
 use D4Sign\Response;
+use D4Sign\Services\BaseService;
 
 class SafeService extends BaseService implements SafeServiceInterface
 {

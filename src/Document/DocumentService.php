@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Services;
+namespace D4Sign\Document;
 
 use D4Sign\Contracts\DocumentServiceInterface;
 use D4Sign\Helpers\UploadHelper;
 use D4Sign\Response;
+use D4Sign\Services\BaseService;
 use GuzzleHttp\Promise\PromiseInterface;
 
 class DocumentService extends BaseService implements DocumentServiceInterface
@@ -41,14 +42,13 @@ class DocumentService extends BaseService implements DocumentServiceInterface
                 (function () use ($fields) {
                     return [
                         'name' => 'uuid_folder',
-                        'contents' => $fields['uuid_folder'] ?? null
+                        'contents' => $fields['uuid_folder'] ?? null,
                     ];
                 })(),
-            ]
+            ],
         ];
 
-        /** @var PromiseInterface $res */
-        return $this->postAsync("documents/{$safeId}/upload", $options);
+        return $this->post("documents/{$safeId}/upload", $options);
     }
 
     public function uploadRelatedDocumentById(string $documentId, array $fields): Response
@@ -58,10 +58,10 @@ class DocumentService extends BaseService implements DocumentServiceInterface
         $options = [
             'multipart' => [
                 $file,
-            ]
+            ],
         ];
 
-        return $this->postAsync("documents/{$documentId}/uploadslave", $options);
+        return $this->post("documents/{$documentId}/uploadslave", $options);
     }
 
     public function addHighlightById(string $documentId, array $fields): Response
@@ -73,7 +73,7 @@ class DocumentService extends BaseService implements DocumentServiceInterface
 
     public function sendToSignerById(string $documentId, array $fields): Response
     {
-        return $this->post("documents/{$documentId}/addhighlight", [
+        return $this->post("documents/{$documentId}/sendtosigner", [
             'json' => $fields,
         ]);
     }

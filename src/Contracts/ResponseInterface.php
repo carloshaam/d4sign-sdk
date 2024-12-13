@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace D4Sign\Contracts;
 
+/**
+ * Interface defining the structure for a response object.
+ */
 interface ResponseInterface
 {
     /**
@@ -28,11 +31,39 @@ interface ResponseInterface
     public function getHeaders(): array;
 
     /**
-     * Returns `true` if the status code is less than 400.
+     * Determines if the operation was successful.
      *
      * @return bool
      */
-    public function ok(): bool;
+    public function isSuccess(): bool;
+
+    /**
+     * Determines if the current state or condition is acceptable.
+     *
+     * @return bool
+     */
+    public function isOk(): bool;
+
+    /**
+     * Determines if the response indicates a redirection.
+     *
+     * @return bool
+     */
+    public function isRedirect(): bool;
+
+    /**
+     * Determines if the response status code indicates a client error (4xx).
+     *
+     * @return bool
+     */
+    public function isClientError(): bool;
+
+    /**
+     * Determines if the response indicates a server error.
+     *
+     * @return bool
+     */
+    public function isServerError(): bool;
 
     /**
      * Returns the string representation of the response.

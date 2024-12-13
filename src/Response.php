@@ -19,9 +19,6 @@ class Response implements ResponseInterface
         $this->headers = $headers;
     }
 
-    /**
-     * @return mixed
-     */
     public function getContent()
     {
         return json_decode($this->content, true);
@@ -37,9 +34,29 @@ class Response implements ResponseInterface
         return $this->headers;
     }
 
-    public function ok(): bool
+    public function isSuccess(): bool
     {
-        return $this->getStatusCode() < 400;
+        return $this->getStatusCode() >= 200 && $this->getStatusCode() < 300;
+    }
+
+    public function isOk(): bool
+    {
+        return $this->isSuccess();
+    }
+
+    public function isRedirect(): bool
+    {
+        return $this->getStatusCode() >= 300 && $this->getStatusCode() < 400;
+    }
+
+    public function isClientError(): bool
+    {
+        return $this->getStatusCode() >= 400 && $this->getStatusCode() < 500;
+    }
+
+    public function isServerError(): bool
+    {
+        return $this->getStatusCode() >= 500;
     }
 
     public function __toString(): string

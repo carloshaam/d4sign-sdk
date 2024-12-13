@@ -4,38 +4,34 @@ declare(strict_types=1);
 
 namespace D4Sign\Services;
 
-use D4Sign\D4SignClient;
+use D4Sign\Client\Contracts\HttpClientInterface;
+use D4Sign\Response;
 
-class BaseService
+abstract class BaseService
 {
-    protected D4SignClient $client;
+    protected HttpClientInterface $client;
 
-    public function __construct(D4SignClient $client)
+    public function __construct(HttpClientInterface $client)
     {
         $this->client = $client;
     }
 
-    protected function get($uri, $options = [])
+    protected function get(string $uri, array $options = []): Response
     {
         return $this->client->get($uri, $options);
     }
 
-    protected function post($uri, $options = [])
+    protected function post(string $uri, array $options = []): Response
     {
         return $this->client->post($uri, $options);
     }
 
-    protected function postAsync($uri, $options = [])
-    {
-        return $this->client->postAsync($uri, $options);
-    }
-
-    protected function put($uri, $options = [])
+    protected function put(string $uri, array $options = []): Response
     {
         return $this->client->put($uri, $options);
     }
 
-    protected function delete($uri, $options = [])
+    protected function delete(string $uri, array $options = []): Response
     {
         return $this->client->delete($uri, $options);
     }

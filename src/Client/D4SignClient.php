@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace D4Sign;
+namespace D4Sign\Client;
 
+use D4Sign\Client\Contracts\HttpClientInterface;
 use D4Sign\Exceptions\D4SignApiHttpException;
+use D4Sign\Response;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
 
-class D4SignClient
+class D4SignClient implements HttpClientInterface
 {
     private string $tokenAPI;
     private string $cryptKey;
@@ -48,17 +50,13 @@ class D4SignClient
         return $options;
     }
 
-    private function request(string $method, string $uri, array $options = [], $async = false)
+    private function request(string $method, string $uri, array $options = [])
     {
         try {
             $options = $this->requestInternal($options);
             $request = new Request($method, $uri, $options['headers'] ?? []);
 
-            if ($async) {
-                $response = $this->client->sendAsync($request, $options)->wait();
-            } else {
-                $response = $this->client->send($request, $options);
-            }
+            $response = $this->client->send($request, $options);
         } catch (BadResponseException $e) {
             $response = $e->getResponse();
         } catch (\Exception $e) {
@@ -76,11 +74,6 @@ class D4SignClient
     public function post(string $uri, array $options = []): Response
     {
         return $this->request('POST', $uri, $options);
-    }
-
-    public function postAsync(string $uri, array $options = []): Response
-    {
-        return $this->request('POST', $uri, $options, true);
     }
 
     public function put(string $uri, array $options = []): Response

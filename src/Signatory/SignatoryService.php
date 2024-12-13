@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Services;
+namespace D4Sign\Signatory;
 
 use D4Sign\Contracts\SignatoryServiceInterface;
 use D4Sign\Response;
+use D4Sign\Services\BaseService;
 
 class SignatoryService extends BaseService implements SignatoryServiceInterface
 {

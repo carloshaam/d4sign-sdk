@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace D4Sign;
 
+use D4Sign\Certificate\CertificateService;
+use D4Sign\Client\D4SignClient;
 use D4Sign\Contracts\CertificateServiceInterface;
 use D4Sign\Contracts\DocumentServiceInterface;
 use D4Sign\Contracts\SafeServiceInterface;
@@ -12,26 +14,18 @@ use D4Sign\Contracts\TagServiceInterface;
 use D4Sign\Contracts\UserServiceInterface;
 use D4Sign\Contracts\WatcherServiceInterface;
 use D4Sign\Contracts\WebhookServiceInterface;
-use D4Sign\Services\CertificateService;
-use D4Sign\Services\DocumentService;
-use D4Sign\Services\SafeService;
-use D4Sign\Services\SignatoryService;
-use D4Sign\Services\TagService;
-use D4Sign\Services\UserService;
-use D4Sign\Services\WatcherService;
-use D4Sign\Services\WebhookService;
+use D4Sign\Document\DocumentService;
+use D4Sign\Safe\SafeService;
+use D4Sign\Signatory\SignatoryService;
+use D4Sign\Tag\TagService;
+use D4Sign\User\UserService;
+use D4Sign\Watcher\WatcherService;
+use D4Sign\Webhook\WebhookService;
 
 class D4Sign
 {
     private D4SignClient $client;
-    private ?SafeServiceInterface $safes = null;
-    private ?DocumentServiceInterface $documents = null;
-    private ?SignatoryServiceInterface $signatories = null;
-    private ?UserServiceInterface $users = null;
-    private ?TagServiceInterface $tags = null;
-    private ?CertificateServiceInterface $certificates = null;
-    private ?WatcherServiceInterface $watchers = null;
-    private ?WebhookServiceInterface $webhooks = null;
+    private array $services = [];
 
     public function __construct(
         string $tokenAPI,
@@ -41,85 +35,52 @@ class D4Sign
         $this->client = new D4SignClient($tokenAPI, $cryptKey, $baseUrl);
     }
 
-    public function __get($name)
+    private function getService(string $service, string $class): object
     {
-        $method = $name;
-        if (method_exists($this, $method)) {
-            return $this->$method();
+        if (! isset($this->services[$service])) {
+            $this->services[$service] = new $class($this->client);
         }
 
-        throw new \RuntimeException("Property {$name} does not exist");
+        return $this->services[$service];
     }
 
     public function safes(): SafeServiceInterface
     {
-        if ($this->safes === null) {
-            $this->safes = new SafeService($this->client);
-        }
-
-        return $this->safes;
+        return $this->getService('safes', SafeService::class);
     }
 
     public function documents(): DocumentServiceInterface
     {
-        if ($this->documents === null) {
-            $this->documents = new DocumentService($this->client);
-        }
-
-        return $this->documents;
+        return $this->getService('documents', DocumentService::class);
     }
 
     public function signatories(): SignatoryServiceInterface
     {
-        if ($this->signatories === null) {
-            $this->signatories = new SignatoryService($this->client);
-        }
-
-        return $this->signatories;
+        return $this->getService('signatories', SignatoryService::class);
     }
 
     public function users(): UserServiceInterface
     {
-        if ($this->users === null) {
-            $this->users = new UserService($this->client);
-        }
-
-        return $this->users;
+        return $this->getService('users', UserService::class);
     }
 
     public function tags(): TagServiceInterface
     {
-        if ($this->tags === null) {
-            $this->tags = new TagService($this->client);
-        }
-
-        return $this->tags;
+        return $this->getService('tags', TagService::class);
     }
 
     public function certificates(): CertificateServiceInterface
     {
-        if ($this->certificates === null) {
-            $this->certificates = new CertificateService($this->client);
-        }
-
-        return $this->certificates;
+        return $this->getService('certificates', CertificateService::class);
     }
 
     public function watchers(): WatcherServiceInterface
     {
-        if ($this->watchers === null) {
-            $this->watchers = new WatcherService($this->client);
-        }
-
-        return $this->watchers;
+        return $this->getService('watchers', WatcherService::class);
     }
 
     public function webhooks(): WebhookServiceInterface
     {
-        if ($this->webhooks === null) {
-            $this->webhooks = new WebhookService($this->client);
-        }
-
-        return $this->webhooks;
+        return $this->getService('webhooks', WebhookService::class);
     }
 }

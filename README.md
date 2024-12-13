@@ -47,7 +47,7 @@ D4SIGN_SECRET_KEY=your_secret_key
 Ou, ao inicializar o SDK:
 
 ```php
-use D4signSdk\D4Sign;
+use D4Sign\D4Sign;
 
 $d4sign = new D4Sign('your_api_key', 'your_secret_key', 'your_api_url');
 ```
@@ -57,7 +57,7 @@ $d4sign = new D4Sign('your_api_key', 'your_secret_key', 'your_api_url');
 Gerencie cofres, incluindo criação e visualização de cofres.
 
 ```php
-$safes = $d4sign->safes->findAll();
+$safes = $d4sign->safes()->findAll();
 ```
 
 ## Documentos
@@ -65,7 +65,7 @@ $safes = $d4sign->safes->findAll();
 Faça o upload de documentos, adicione arquivos e gerencie o status de documentos.
 
 ```php
-$documents = $d4sign->documents->uploadDocumentByIdSafe();
+$documents = $d4sign->documents()->uploadDocumentByIdSafe();
 ````
 
 ## Signatários
@@ -73,7 +73,7 @@ $documents = $d4sign->documents->uploadDocumentByIdSafe();
 Adicione, remova e gerencie signatários de documentos.
 
 ```php
-$signatories = $d4sign->signatories->findByDocumentId();
+$signatories = $d4sign->signatories()->findByDocumentId();
 ````
 
 ## Usuários
@@ -81,7 +81,7 @@ $signatories = $d4sign->signatories->findByDocumentId();
 Gerencie usuários na sua conta D4Sign.
 
 ```php
-$users = $d4sign->users->findAll();
+$users = $d4sign->users()->findAll();
 ````
 
 ## Tags
@@ -89,7 +89,7 @@ $users = $d4sign->users->findAll();
 Utilize e gerencie tags para personalizar seus documentos.
 
 ```php
-$tags = $d4sign->tags->findByDocumentId();
+$tags = $d4sign->tags()->findByDocumentId();
 ````
 
 ## Certificado
@@ -97,7 +97,7 @@ $tags = $d4sign->tags->findByDocumentId();
 Acesse e gerencie certificados de assinatura.
 
 ```php
-$certificates = $d4sign->certificates->addByDocumentId();
+$certificates = $d4sign->certificates()->addByDocumentId();
 ````
 
 ## Observadores
@@ -105,7 +105,7 @@ $certificates = $d4sign->certificates->addByDocumentId();
 Adicione observadores para acompanhar a assinatura de documentos.
 
 ```php
-$watchers = $d4sign->watchers->removeByDocumentId();
+$watchers = $d4sign->watchers()->removeByDocumentId();
 ````
 
 ## Webhook
@@ -113,7 +113,7 @@ $watchers = $d4sign->watchers->removeByDocumentId();
 Cadastre webhook para acompanhar seus documentos.
 
 ```php
-$webhooks = $d4sign->webhooks->create();
+$webhooks = $d4sign->webhooks()->create();
 ````
 
 Para uma visão completa de todas as funções e parâmetros, consulte a [documentação oficial](https://docapi.d4sign.com.br/docs) para exemplos detalhados, funções avançadas e casos de uso.
