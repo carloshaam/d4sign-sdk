@@ -5,83 +5,135 @@ declare(strict_types=1);
 namespace D4Sign\Client;
 
 use D4Sign\Client\Contracts\HttpClientInterface;
-use D4Sign\Response;
+use D4Sign\Exceptions\HttpClientException;
 use GuzzleHttp\Client;
-use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Exception\GuzzleException;
 
 class HttpClient implements HttpClientInterface
 {
-    private Client $http;
+    private Client $client;
+    private array $options = [];
 
-    public function __construct(Client $http = null)
+    public function __construct(array $config = [])
     {
-        $this->http = $http ?? new Client();
+        $this->client = new Client($config);
     }
 
-    private function createResponse($rawResponse): Response
+    /**
+     * Static instance for quick use (Fluent Syntax).
+     */
+    public static function new(array $config = []): self
     {
-        return new Response(
-            $rawResponse->getStatusCode(),
-            $rawResponse->getBody()->getContents(),
-            $rawResponse->getHeaders(),
-        );
+        return new self($config);
     }
 
-    public function get(string $url, array $query = [], array $headers = []): Response
+    /**
+     * Set a base URI for the client.
+     */
+    public function baseUrl(string $url): self
     {
-        $response = $this->http->get($url, array_merge($query, ['headers' => $headers]));
+        $this->options['base_uri'] = rtrim($url, '/') . '/';
 
-        return $this->createResponse($response);
+        return $this;
     }
 
-    public function post(string $url, array $body = [], array $headers = []): Response
+    /**
+     * Add default headers to the request.
+     */
+    public function withHeaders(array $headers): self
     {
-        $response = $this->http->post($url, [
-            'headers' => $headers,
-            'json' => $body,
-        ]);
+        $this->options['headers'] = $headers;
 
-        return $this->createResponse($response);
+        return $this;
     }
 
-    public function put(string $url, array $body = [], array $headers = []): Response
+    /**
+     * Set query parameters.
+     */
+    public function withQuery(array $query): self
     {
-        $response = $this->http->put($url, [
-            'headers' => $headers,
-            'json' => $body,
-        ]);
+        $this->options['query'] = $query;
 
-        return $this->createResponse($response);
+        return $this;
     }
 
-    public function delete(string $url, array $headers = []): Response
+    /**
+     * Set JSON body content.
+     */
+    public function withJson(array $json): self
     {
-        $response = $this->http->delete($url, ['headers' => $headers]);
+        $this->options['json'] = $json;
 
-        return $this->createResponse($response);
+        return $this;
     }
 
-    public function getAsync(string $url, array $query = [], array $headers = []): PromiseInterface
+    /**
+     * Set multipart form data.
+     */
+    public function withMultipart(array $multipart): self
     {
-        return $this->http
-            ->getAsync($url, array_merge($query, ['headers' => $headers]))
-            ->then(fn($rawResponse) => $this->createResponse($rawResponse))
-            ->wait();
+        $this->options['multipart'] = $multipart;
+
+        return $this;
     }
 
-    public function putAsync(string $url, array $body = [], array $headers = []): PromiseInterface
+    /**
+     * Set raw body content.
+     */
+    public function withBody(string $body): self
     {
-        return $this->http
-            ->putAsync($url, array_merge($body, ['headers' => $headers]))
-            ->then(fn($rawResponse) => $this->createResponse($rawResponse))
-            ->wait();
+        $this->options['body'] = $body;
+
+        return $this;
     }
 
-    public function deleteAsync(string $url, array $headers = []): PromiseInterface
+    /**
+     * Make a GET request.
+     */
+    public function get(string $uri): HttpResponse
     {
-        return $this->http
-            ->deleteAsync($url, ['headers' => $headers])
-            ->then(fn($rawResponse) => $this->createResponse($rawResponse))
-            ->wait();
+        return $this->send('GET', $uri);
+    }
+
+    /**
+     * Make a POST request.
+     */
+    public function post(string $uri): HttpResponse
+    {
+        return $this->send('POST', $uri);
+    }
+
+    /**
+     * Make a PUT request.
+     */
+    public function put(string $uri): HttpResponse
+    {
+        return $this->send('PUT', $uri);
+    }
+
+    /**
+     * Make a DELETE request.
+     */
+    public function delete(string $uri): HttpResponse
+    {
+        return $this->send('DELETE', $uri);
+    }
+
+    /**
+     * Send the request using GuzzleHttp.
+     */
+    public function send(string $method, string $uri): HttpResponse
+    {
+        try {
+            $response = $this->client->request($method, $uri, $this->options);
+
+            return new HttpResponse(
+                $response->getStatusCode(),
+                (string)$response->getBody(),
+                $response->getHeaders(),
+            );
+        } catch (GuzzleException $e) {
+            throw new HttpClientException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }

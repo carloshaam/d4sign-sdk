@@ -4,17 +4,27 @@ declare(strict_types=1);
 
 namespace D4Sign\Client\Contracts;
 
-use D4Sign\Response;
-
 interface HttpClientInterface
 {
-    public function get(string $uri, array $options = []): Response;
+    public static function new(array $config = []): self;
 
-    public function post(string $uri, array $options = []): Response;
+    public function baseUrl(string $url): self;
 
-    public function put(string $uri, array $options = []): Response;
+    public function withHeaders(array $headers): self;
 
-    public function delete(string $uri, array $options = []): Response;
+    public function withQuery(array $query): self;
 
-    public function options(string $uri, array $options = []): Response;
+    public function withJson(array $json): self;
+
+    public function withMultipart(array $multipart): self;
+
+    public function withBody(string $body): self;
+
+    public function get(string $uri): HttpResponseInterface;
+
+    public function post(string $uri): HttpResponseInterface;
+
+    public function put(string $uri): HttpResponseInterface;
+
+    public function delete(string $uri): HttpResponseInterface;
 }

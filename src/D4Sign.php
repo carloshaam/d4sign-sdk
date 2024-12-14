@@ -38,7 +38,7 @@ class D4Sign
     private function getService(string $service, string $class): object
     {
         if (! isset($this->services[$service])) {
-            $this->services[$service] = new $class($this->client);
+            $this->services[$service] = new $class($this->client->getHttpClient());
         }
 
         return $this->services[$service];

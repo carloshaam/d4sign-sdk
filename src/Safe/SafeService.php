@@ -4,55 +4,56 @@ declare(strict_types=1);
 
 namespace D4Sign\Safe;
 
+use D4Sign\Client\HttpClient;
+use D4Sign\Client\HttpResponse;
 use D4Sign\Contracts\SafeServiceInterface;
-use D4Sign\Response;
-use D4Sign\Services\BaseService;
 
-class SafeService extends BaseService implements SafeServiceInterface
+class SafeService implements SafeServiceInterface
 {
-    public function findAll(): Response
+    private HttpClient $httpClient;
+
+    public function __construct(HttpClient $httpClient)
     {
-        return $this->get('safes');
+        $this->httpClient = $httpClient;
     }
 
-    public function findAllDocumentByIdSafe(string $safeId, int $page = 1): Response
+    public function findAll(): HttpResponse
     {
-        return $this->get("documents/{$safeId}/safe", ['query' => ['pg' => $page]]);
+        return $this->httpClient->get('safes');
     }
 
-    public function findAllDocumentByIdSafeAndIdFolder(string $safeId, string $folderId, int $page = 1): Response
+    public function findAllDocumentByIdSafe(string $safeId, int $page = 1): HttpResponse
     {
-        return $this->get("documents/{$safeId}/safe/{$folderId}", ['query' => ['pg' => $page]]);
+        return $this->httpClient->withQuery(['pg' => $page])->get("documents/{$safeId}/safe");
     }
 
-    public function findFolderById(string $safeId): Response
+    public function findAllDocumentByIdSafeAndIdFolder(string $safeId, string $folderId, int $page = 1): HttpResponse
     {
-        return $this->get("folders/{$safeId}/find");
+        return $this->httpClient->withQuery(['pg' => $page])->get("documents/{$safeId}/safe/{$folderId}");
     }
 
-    public function createFolderById(string $safeId, array $fields): Response
+    public function findFolderById(string $safeId): HttpResponse
     {
-        return $this->post("folders/{$safeId}/create", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->get("folders/{$safeId}/find");
     }
 
-    public function updateFolderById(string $safeId, array $fields): Response
+    public function createFolderById(string $safeId, array $fields): HttpResponse
     {
-        return $this->post("folders/{$safeId}/rename", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("folders/{$safeId}/create");
     }
 
-    public function createBatche(array $fields): Response
+    public function updateFolderById(string $safeId, array $fields): HttpResponse
     {
-        return $this->post('batches', [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("folders/{$safeId}/rename");
     }
 
-    public function getBalance(): Response
+    public function createBatch(array $fields): HttpResponse
     {
-        return $this->get('account/balance');
+        return $this->httpClient->withJson($fields)->post('batches');
+    }
+
+    public function getBalance(): HttpResponse
+    {
+        return $this->httpClient->get('account/balance');
     }
 }

@@ -4,124 +4,106 @@ declare(strict_types=1);
 
 namespace D4Sign\Document;
 
+use D4Sign\Client\HttpClient;
+use D4Sign\Client\HttpResponse;
 use D4Sign\Contracts\DocumentServiceInterface;
 use D4Sign\Helpers\UploadHelper;
-use D4Sign\Response;
-use D4Sign\Services\BaseService;
-use GuzzleHttp\Promise\PromiseInterface;
 
-class DocumentService extends BaseService implements DocumentServiceInterface
+class DocumentService implements DocumentServiceInterface
 {
-    public function findAll(int $page = 1): Response
+    private HttpClient $httpClient;
+
+    public function __construct(HttpClient $httpClient)
     {
-        return $this->get('documents', ['query' => ['pg' => $page]]);
+        $this->httpClient = $httpClient;
     }
 
-    public function findById(string $documentId): Response
+    public function findAll(int $page = 1): HttpResponse
     {
-        return $this->get("documents/{$documentId}");
+        return $this->httpClient->withQuery(['pg' => $page])->get('documents');
     }
 
-    public function findDimensionsById(string $documentId): Response
+    public function findById(string $documentId): HttpResponse
     {
-        return $this->get("documents/{$documentId}/dimensions");
+        return $this->httpClient->get("documents/{$documentId}");
     }
 
-    public function findStatusById(string $statusId, int $page = 1): Response
+    public function findDimensionsById(string $documentId): HttpResponse
     {
-        return $this->get("documents/{$statusId}/status", ['query' => ['pg' => $page]]);
+        return $this->httpClient->get("documents/{$documentId}/dimensions");
     }
 
-    public function uploadDocumentByIdSafe(string $safeId, array $fields): Response
+    public function findStatusById(string $statusId, int $page = 1): HttpResponse
+    {
+        return $this->httpClient->withQuery(['pg' => $page])->get("documents/{$statusId}/status");
+    }
+
+    public function uploadDocumentByIdSafe(string $safeId, array $fields): HttpResponse
     {
         $file = UploadHelper::getFile($fields['file']);
 
-        $options = [
-            'multipart' => [
-                $file,
-                (function () use ($fields) {
-                    return [
-                        'name' => 'uuid_folder',
-                        'contents' => $fields['uuid_folder'] ?? null,
-                    ];
-                })(),
-            ],
+        $data = [
+            $file,
+            (function () use ($fields) {
+                return [
+                    'name' => 'uuid_folder',
+                    'contents' => $fields['uuid_folder'] ?? null,
+                ];
+            })(),
         ];
 
-        return $this->post("documents/{$safeId}/upload", $options);
+        return $this->httpClient->withMultipart($data)->post("documents/{$safeId}/upload");
     }
 
-    public function uploadRelatedDocumentById(string $documentId, array $fields): Response
+    public function uploadRelatedDocumentById(string $documentId, array $fields): HttpResponse
     {
         $file = UploadHelper::getFile($fields['file']);
 
-        $options = [
-            'multipart' => [
-                $file,
-            ],
-        ];
-
-        return $this->post("documents/{$documentId}/uploadslave", $options);
+        return $this->httpClient->withMultipart($file)->post("documents/{$documentId}/uploadslave");
     }
 
-    public function addHighlightById(string $documentId, array $fields): Response
+    public function addHighlightById(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/addhighlight", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/addhighlight");
     }
 
-    public function sendToSignerById(string $documentId, array $fields): Response
+    public function sendToSignerById(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/sendtosigner", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/sendtosigner");
     }
 
-    public function cancelById(string $documentId, array $fields): Response
+    public function cancelById(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/cancel", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/cancel");
     }
 
-    public function downloadById(string $documentId, array $fields): Response
+    public function downloadById(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/download", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/download");
     }
 
-    public function resendToSignerById(string $documentId, array $fields): Response
+    public function resendToSignerById(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/resend", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/resend");
     }
 
-    public function templates(): Response
+    public function templates(): HttpResponse
     {
-        return $this->post('templates');
+        return $this->httpClient->post('templates');
     }
 
-    public function createDocumentFromHtmlTemplate(string $documentId, array $fields): Response
+    public function createDocumentFromHtmlTemplate(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/makedocumentbytemplate", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/makedocumentbytemplate");
     }
 
-    public function createDocumentFromWordTemplate(string $documentId, array $fields): Response
+    public function createDocumentFromWordTemplate(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/makedocumentbytemplateword", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/makedocumentbytemplateword");
     }
 
-    public function generateDownloadLink(string $documentId, array $fields): Response
+    public function generateDownloadLink(string $documentId, array $fields): HttpResponse
     {
-        return $this->post("documents/{$documentId}/download", [
-            'json' => $fields,
-        ]);
+        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/download");
     }
 }
