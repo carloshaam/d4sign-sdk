@@ -20,7 +20,7 @@ class DocumentService implements DocumentServiceInterface
 
     public function findAll(int $page = 1): HttpResponse
     {
-        return $this->httpClient->withQuery(['pg' => $page])->get('documents');
+        return $this->httpClient->get("documents", ['pg' => $page]);
     }
 
     public function findById(string $documentId): HttpResponse
@@ -35,7 +35,7 @@ class DocumentService implements DocumentServiceInterface
 
     public function findStatusById(string $statusId, int $page = 1): HttpResponse
     {
-        return $this->httpClient->withQuery(['pg' => $page])->get("documents/{$statusId}/status");
+        return $this->httpClient->get("documents/{$statusId}/status", ['pg' => $page]);
     }
 
     public function uploadDocumentByIdSafe(string $safeId, array $fields): HttpResponse
@@ -52,39 +52,39 @@ class DocumentService implements DocumentServiceInterface
             })(),
         ];
 
-        return $this->httpClient->withMultipart($data)->post("documents/{$safeId}/upload");
+        return $this->httpClient->asMultipart()->post("documents/{$safeId}/upload", $data);
     }
 
     public function uploadRelatedDocumentById(string $documentId, array $fields): HttpResponse
     {
-        $file = UploadHelper::getFile($fields['file']);
+        $data = UploadHelper::getFile($fields['file']);
 
-        return $this->httpClient->withMultipart($file)->post("documents/{$documentId}/uploadslave");
+        return $this->httpClient->asMultipart()->post("documents/{$documentId}/uploadslave", $data);
     }
 
     public function addHighlightById(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/addhighlight");
+        return $this->httpClient->post("documents/{$documentId}/addhighlight", $fields);
     }
 
     public function sendToSignerById(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/sendtosigner");
+        return $this->httpClient->post("documents/{$documentId}/sendtosigner", $fields);
     }
 
     public function cancelById(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/cancel");
+        return $this->httpClient->post("documents/{$documentId}/cancel", $fields);
     }
 
     public function downloadById(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/download");
+        return $this->httpClient->post("documents/{$documentId}/download", $fields);
     }
 
     public function resendToSignerById(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/resend");
+        return $this->httpClient->post("documents/{$documentId}/resend", $fields);
     }
 
     public function templates(): HttpResponse
@@ -94,16 +94,16 @@ class DocumentService implements DocumentServiceInterface
 
     public function createDocumentFromHtmlTemplate(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/makedocumentbytemplate");
+        return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplate", $fields);
     }
 
     public function createDocumentFromWordTemplate(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/makedocumentbytemplateword");
+        return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplateword", $fields);
     }
 
     public function generateDownloadLink(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/download");
+        return $this->httpClient->post("documents/{$documentId}/download", $fields);
     }
 }

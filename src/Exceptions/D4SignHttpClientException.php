@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace D4Sign\Exceptions;
 
-class D4SignApiHttpException extends \Exception
+class D4SignHttpClientException extends \Exception
 {
     //
 }

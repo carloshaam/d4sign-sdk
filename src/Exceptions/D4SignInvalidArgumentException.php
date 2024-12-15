@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace D4Sign\Exceptions;
 
-class D4SignApiInvalidArgumentException extends \LogicException
+class D4SignInvalidArgumentException extends \LogicException
 {
     protected string $methodName;
     protected array $additionalInfo;

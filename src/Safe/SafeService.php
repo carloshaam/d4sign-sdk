@@ -24,12 +24,12 @@ class SafeService implements SafeServiceInterface
 
     public function findAllDocumentByIdSafe(string $safeId, int $page = 1): HttpResponse
     {
-        return $this->httpClient->withQuery(['pg' => $page])->get("documents/{$safeId}/safe");
+        return $this->httpClient->get("documents/{$safeId}/safe", ['pg' => $page]);
     }
 
     public function findAllDocumentByIdSafeAndIdFolder(string $safeId, string $folderId, int $page = 1): HttpResponse
     {
-        return $this->httpClient->withQuery(['pg' => $page])->get("documents/{$safeId}/safe/{$folderId}");
+        return $this->httpClient->get("documents/{$safeId}/safe/{$folderId}", ['pg' => $page]);
     }
 
     public function findFolderById(string $safeId): HttpResponse
@@ -39,17 +39,17 @@ class SafeService implements SafeServiceInterface
 
     public function createFolderById(string $safeId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("folders/{$safeId}/create");
+        return $this->httpClient->post("folders/{$safeId}/create", $fields);
     }
 
     public function updateFolderById(string $safeId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("folders/{$safeId}/rename");
+        return $this->httpClient->post("folders/{$safeId}/rename", $fields);
     }
 
     public function createBatch(array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post('batches');
+        return $this->httpClient->post('batches', $fields);
     }
 
     public function getBalance(): HttpResponse

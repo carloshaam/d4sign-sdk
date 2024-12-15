@@ -29,56 +29,59 @@ class SignatoryService implements SignatoryServiceInterface
 
     public function createSignatoryByIdDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/createlist");
+        return $this->httpClient->post("documents/{$documentId}/createlist", $fields);
     }
 
     public function updateEmailByIdDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/changeemail");
+        return $this->httpClient->post("documents/{$documentId}/changeemail", $fields);
     }
 
     public function updateSMSNumberByIdDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/changesmsnumber");
+        return $this->httpClient->post("documents/{$documentId}/changesmsnumber", $fields);
     }
 
     public function updateAccessCodeByIdDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/changepasswordcode");
+        return $this->httpClient->post("documents/{$documentId}/changepasswordcode", $fields);
     }
 
     public function removeByIdDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/removeemaillist");
+        return $this->httpClient->post("documents/{$documentId}/removeemaillist", $fields);
     }
 
     /*public function addPinByIdMainDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/addpins");
+        return $this->httpClient->post("documents/{$documentId}/addpins", $fields);
     }*/
 
     /*public function removePinByIdMainDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/removepins");
+        return $this->httpClient->post("documents/{$documentId}/removepins", $fields);
     }*/
 
     /*public function findAllPinByIdMainDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/listpins");
+        return $this->httpClient->post("documents/{$documentId}/listpins", $fields);
     }*/
 
     public function addInformationSignatoryByIdDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/addinfo");
+        return $this->httpClient->post("documents/{$documentId}/addinfo", $fields);
     }
 
     public function addSignatoryTypeByIdDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/addsignaturetype");
+        return $this->httpClient->post("documents/{$documentId}/addsignaturetype", $fields);
     }
 
-    public function findDetailGroupSignatoryByIdDocumentAndIdGroup(string $documentId, string $groupId, array $fields): HttpResponse
-    {
-        return $this->httpClient->withJson($fields)->post("documents/{$documentId}/groupdetails/{$groupId}");
+    public function findDetailGroupSignatoryByIdDocumentAndIdGroup(
+        string $documentId,
+        string $groupId,
+        array $fields
+    ): HttpResponse {
+        return $this->httpClient->post("documents/{$documentId}/groupdetails/{$groupId}", $fields);
     }
 }
