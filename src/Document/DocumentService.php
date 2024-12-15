@@ -7,103 +7,221 @@ namespace D4Sign\Document;
 use D4Sign\Client\HttpClient;
 use D4Sign\Client\HttpResponse;
 use D4Sign\Contracts\DocumentServiceInterface;
+use D4Sign\Exceptions\D4SignConnectException;
 use D4Sign\Helpers\UploadHelper;
 
+/**
+ * Implementação concreta de DocumentServiceInterface.
+ * Gerencia a comunicação com a API D4Sign para operações relacionadas a documentos.
+ */
 class DocumentService implements DocumentServiceInterface
 {
+    /**
+     * @var HttpClient Cliente HTTP utilizado para interagir com a API.
+     */
     private HttpClient $httpClient;
 
+    /**
+     * Construtor da classe.
+     *
+     * @param HttpClient $httpClient Instância do cliente HTTP.
+     */
     public function __construct(HttpClient $httpClient)
     {
         $this->httpClient = $httpClient;
     }
 
-    public function findAll(int $page = 1): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function listDocuments(int $page = 1): HttpResponse
     {
-        return $this->httpClient->get("documents", ['pg' => $page]);
+        try {
+            return $this->httpClient->get("documents", ['pg' => $page]);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException('Erro ao listar documentos: ' . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function findById(string $documentId): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function getDocumentDetails(string $documentId): HttpResponse
     {
-        return $this->httpClient->get("documents/{$documentId}");
+        try {
+            return $this->httpClient->get("documents/{$documentId}");
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao obter detalhes do documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function findDimensionsById(string $documentId): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function getDocumentDimensions(string $documentId): HttpResponse
     {
-        return $this->httpClient->get("documents/{$documentId}/dimensions");
+        try {
+            return $this->httpClient->get("documents/{$documentId}/dimensions");
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao obter dimensões do documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function findStatusById(string $statusId, int $page = 1): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function listDocumentsByStatus(string $statusId, int $page = 1): HttpResponse
     {
-        return $this->httpClient->get("documents/{$statusId}/status", ['pg' => $page]);
+        try {
+            return $this->httpClient->get("documents/{$statusId}/status", ['pg' => $page]);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao listar documentos com status {$statusId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function uploadDocumentByIdSafe(string $safeId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function uploadDocumentToSafe(string $safeId, array $fields): HttpResponse
     {
-        $file = UploadHelper::getFile($fields['file']);
+        try {
+            $file = UploadHelper::getFile($fields['file']);
 
-        $data = [
-            $file,
-            (function () use ($fields) {
-                return [
-                    'name' => 'uuid_folder',
-                    'contents' => $fields['uuid_folder'] ?? null,
-                ];
-            })(),
-        ];
+            $data = [
+                $file,
+                (function () use ($fields) {
+                    return [
+                        'name' => 'uuid_folder',
+                        'contents' => $fields['uuid_folder'] ?? null,
+                    ];
+                })(),
+            ];
 
-        return $this->httpClient->asMultipart()->post("documents/{$safeId}/upload", $data);
+            return $this->httpClient->asMultipart()->post("documents/{$safeId}/upload", $data);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao enviar documento para o cofre {$safeId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function uploadRelatedDocumentById(string $documentId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function uploadRelatedDocument(string $documentId, array $fields): HttpResponse
     {
-        $data = UploadHelper::getFile($fields['file']);
+        try {
+            $data = UploadHelper::getFile($fields['file']);
 
-        return $this->httpClient->asMultipart()->post("documents/{$documentId}/uploadslave", $data);
+            return $this->httpClient->asMultipart()->post("documents/{$documentId}/uploadslave", $data);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao enviar documento relacionado ao documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function addHighlightById(string $documentId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function addDocumentHighlight(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/addhighlight", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/addhighlight", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao adicionar destaque ao documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function sendToSignerById(string $documentId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function sendDocumentToSigners(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/sendtosigner", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/sendtosigner", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao enviar documento {$documentId} para os signatários: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function cancelById(string $documentId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function cancelDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/cancel", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/cancel", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao cancelar o documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function downloadById(string $documentId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function downloadDocument(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/download", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/download", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao baixar o documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function resendToSignerById(string $documentId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function resendDocumentToSigners(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/resend", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/resend", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao reenviar documento {$documentId} para os signatários: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function templates(): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function listTemplates(): HttpResponse
     {
-        return $this->httpClient->post('templates');
+        try {
+            return $this->httpClient->post('templates');
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao listar modelos de documentos: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function createDocumentFromHtmlTemplate(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplate", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplate", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao criar documento a partir do modelo HTML {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function createDocumentFromWordTemplate(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplateword", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplateword", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao criar documento a partir do modelo Word {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    public function generateDownloadLink(string $documentId, array $fields): HttpResponse
+    /**
+     * {@inheritdoc}
+     */
+    public function generateDocumentDownloadLink(string $documentId, array $fields): HttpResponse
     {
-        return $this->httpClient->post("documents/{$documentId}/download", $fields);
+        try {
+            return $this->httpClient->post("documents/{$documentId}/download", $fields);
+        } catch (\Throwable $e) {
+            throw new D4SignConnectException("Erro ao gerar link de download para o documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 }

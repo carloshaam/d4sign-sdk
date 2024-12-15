@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use D4Sign\Contracts\DocumentServiceInterface;
 use D4Sign\Contracts\SafeServiceInterface;
 use D4Sign\D4Sign;
 use PHPUnit\Framework\TestCase;
@@ -16,5 +17,15 @@ class D4SignTest extends TestCase
 
         $this->assertInstanceOf(SafeServiceInterface::class, $safeService1);
         $this->assertSame($safeService1, $safeService2);
+    }
+
+    public function testDocumentsServiceInstantiation()
+    {
+        $sdk = new D4Sign('tokenAPI', 'cryptKey');
+        $documentService1 = $sdk->documents();
+        $documentService2 = $sdk->documents();
+
+        $this->assertInstanceOf(DocumentServiceInterface::class, $documentService1);
+        $this->assertSame($documentService1, $documentService2);
     }
 }
