@@ -11,7 +11,7 @@ class D4SignClient
     public function __construct(
         string $tokenAPI,
         string $cryptKey,
-        string $baseUrl = 'https://sandbox.d4sign.com.br/api/v1'
+        string $baseUrl = 'https://secure.d4sign.com.br/api/v1'
     ) {
         $this->httpClient = HttpClient::new()
             ->baseUrl($baseUrl)
