@@ -13,14 +13,14 @@ Este SDK fornece uma integração completa com a API da D4Sign, facilitando o us
 - [Instalação](#instalação)
 - [Configuração](#configuração)
 - [Uso](#uso)
-    - [Cofres](#cofres)
-    - [Documentos](#documentos)
-    - [Signatários](#signatários)
-    - [Usuários](#usuários)
-    - [Tags](#tags)
-    - [Certificado](#certificado)
-    - [Observadores](#observadores)
-    - [Webhook](#webhook)
+    - [Cofres](#cofres) - Gerencie cofres, incluindo criação e visualização de cofres.
+    - [Documentos](#documentos) - Faça o upload de documentos, adicione arquivos e gerencie o status de documentos.
+    - [Signatários](#signatários) - Adicione, remova e gerencie signatários de documentos.
+    - [Usuários](#usuários) - Gerencie usuários na sua conta D4Sign.
+    - [Tags](#tags) - Utilize e gerencie tags para personalizar seus documentos.
+    - [Certificado](#certificado) - Acesse e gerencie certificados de assinatura.
+    - [Observadores](#observadores) - Adicione observadores para acompanhar a assinatura de documentos.
+    - [Webhook](#webhook) - Cadastre webhook para acompanhar seus documentos.
 - [Requisitos](#requisitos)
 - [Contribuição](#contribuição)
 - [Licença](#licença)
@@ -60,6 +60,8 @@ Gerencie cofres, incluindo criação e visualização de cofres.
 $safes = $d4sign->safes()->findAll();
 ```
 
+[Documentação completa sobre Cofres em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Safe)
+
 ## Documentos
 
 Faça o upload de documentos, adicione arquivos e gerencie o status de documentos.
@@ -67,6 +69,8 @@ Faça o upload de documentos, adicione arquivos e gerencie o status de documento
 ```php
 $documents = $d4sign->documents()->uploadDocumentByIdSafe();
 ````
+
+[Documentação completa sobre Documentos em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Document)
 
 ## Signatários
 
@@ -76,6 +80,8 @@ Adicione, remova e gerencie signatários de documentos.
 $signatories = $d4sign->signatories()->findByDocumentId();
 ````
 
+[Documentação completa sobre Signatários em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Signatory)
+
 ## Usuários
 
 Gerencie usuários na sua conta D4Sign.
@@ -83,6 +89,8 @@ Gerencie usuários na sua conta D4Sign.
 ```php
 $users = $d4sign->users()->findAll();
 ````
+
+[Documentação completa sobre Usuários em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/User)
 
 ## Tags
 
@@ -92,6 +100,8 @@ Utilize e gerencie tags para personalizar seus documentos.
 $tags = $d4sign->tags()->findByDocumentId();
 ````
 
+[Documentação completa sobre Tags em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Tag)
+
 ## Certificado
 
 Acesse e gerencie certificados de assinatura.
@@ -99,6 +109,8 @@ Acesse e gerencie certificados de assinatura.
 ```php
 $certificates = $d4sign->certificates()->addByDocumentId();
 ````
+
+[Documentação completa sobre Certificados em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Certificate)
 
 ## Observadores
 
@@ -108,6 +120,8 @@ Adicione observadores para acompanhar a assinatura de documentos.
 $watchers = $d4sign->watchers()->removeByDocumentId();
 ````
 
+[Documentação completa sobre Observadores em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Watcher)
+
 ## Webhook
 
 Cadastre webhook para acompanhar seus documentos.
@@ -115,6 +129,8 @@ Cadastre webhook para acompanhar seus documentos.
 ```php
 $webhooks = $d4sign->webhooks()->create();
 ````
+
+[Documentação completa sobre Webhooks em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Webhook)
 
 Para uma visão completa de todas as funções e parâmetros, consulte a [documentação oficial](https://docapi.d4sign.com.br/docs) para exemplos detalhados, funções avançadas e casos de uso.
 
