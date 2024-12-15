@@ -251,5 +251,6 @@ class HttpClient implements HttpClientInterface
         $this->options = [
             'http_errors' => false,
         ];
+        $this->bodyFormat = 'json';
     }
 }

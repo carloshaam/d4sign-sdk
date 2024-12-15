@@ -15,6 +15,7 @@ use D4Sign\Contracts\UserServiceInterface;
 use D4Sign\Contracts\WatcherServiceInterface;
 use D4Sign\Contracts\WebhookServiceInterface;
 use D4Sign\Document\DocumentService;
+use D4Sign\Exceptions\D4SignInvalidArgumentException;
 use D4Sign\Safe\SafeService;
 use D4Sign\Signatory\SignatoryService;
 use D4Sign\Tag\TagService;
@@ -24,13 +25,16 @@ use D4Sign\Webhook\WebhookService;
 
 class D4Sign
 {
+    private const DEFAULT_BASE_URL = 'https://sandbox.d4sign.com.br/api/v1';
+
     private D4SignClient $client;
+
     private array $services = [];
 
     public function __construct(
         string $tokenAPI,
         string $cryptKey,
-        string $baseUrl = 'https://sandbox.d4sign.com.br/api/v1'
+        string $baseUrl = self::DEFAULT_BASE_URL
     ) {
         $this->client = new D4SignClient($tokenAPI, $cryptKey, $baseUrl);
     }
@@ -38,6 +42,10 @@ class D4Sign
     private function getService(string $service, string $class): object
     {
         if (! isset($this->services[$service])) {
+            if (! class_exists($class)) {
+                throw new D4SignInvalidArgumentException("Class $class does not exist.");
+            }
+
             $this->services[$service] = new $class($this->client->getHttpClient());
         }
 
