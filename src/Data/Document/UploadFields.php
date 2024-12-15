@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Data;
+namespace D4Sign\Data\Document;
 
 use GuzzleHttp\Psr7\Utils;
 

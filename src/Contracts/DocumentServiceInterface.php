@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace D4Sign\Contracts;
 
 use D4Sign\Client\Contracts\HttpResponseInterface;
-use D4Sign\Data\HighlightFields;
-use D4Sign\Data\SendToSignersFields;
-use D4Sign\Data\UploadFields;
+use D4Sign\Data\Document\{
+    CancelDocumentFields,
+    HighlightFields,
+    SendToSignersFields,
+    UploadFields
+};
 
 /**
  * Interface para gerenciamento de documentos no serviço D4Sign.
@@ -94,12 +97,12 @@ interface DocumentServiceInterface
     /**
      * Cancela um documento em processo de assinatura.
      *
-     * @param string $documentId ID do documento.
-     * @param array $fields Motivo do cancelamento ou outras informações.
+     * @param string $documentId ID do documento a ser cancelado.
+     * @param CancelDocumentFields $fields Objeto contendo os dados de cancelamento.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o cancelamento.
      */
-    public function cancelDocument(string $documentId, array $fields): HttpResponseInterface;
+    public function cancelDocument(string $documentId, CancelDocumentFields $fields): HttpResponseInterface;
 
     /**
      * Faz o download de um documento.

@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Data;
+namespace D4Sign\Data\Document;
 
 class HighlightFields
 {
-
     private string $email;
 
     private ?string $keySigner = null;

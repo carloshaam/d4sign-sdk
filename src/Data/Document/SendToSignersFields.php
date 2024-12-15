@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Data;
+namespace D4Sign\Data\Document;
 
 use D4Sign\Exceptions\D4SignInvalidArgumentException;
 
 class SendToSignersFields
 {
     private string $skipEmail;
+
     private string $workflow;
+
     private ?string $message = null;
+
     private ?string $tokenAPI = null;
 
     /**

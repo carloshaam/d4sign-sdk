@@ -7,9 +7,12 @@ namespace D4Sign\Document;
 use D4Sign\Client\HttpClient;
 use D4Sign\Client\HttpResponse;
 use D4Sign\Contracts\DocumentServiceInterface;
-use D4Sign\Data\HighlightFields;
-use D4Sign\Data\SendToSignersFields;
-use D4Sign\Data\UploadFields;
+use D4Sign\Data\Document\{
+    CancelDocumentFields,
+    HighlightFields,
+    SendToSignersFields,
+    UploadFields
+};
 use D4Sign\Exceptions\D4SignConnectException;
 
 /**
@@ -44,7 +47,7 @@ class DocumentService implements DocumentServiceInterface
             throw new D4SignConnectException(
                 'Erro ao listar documentos: ' . $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
     }
@@ -119,7 +122,10 @@ class DocumentService implements DocumentServiceInterface
     public function uploadRelatedDocument(string $documentId, UploadFields $fields): HttpResponse
     {
         try {
-            return $this->httpClient->asMultipart()->post("documents/{$documentId}/uploadslave", $fields->toMultipart());
+            return $this->httpClient->asMultipart()->post(
+                "documents/{$documentId}/uploadslave",
+                $fields->toMultipart(),
+            );
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Erro ao enviar documento relacionado ao documento {$documentId}: " . $e->getMessage(),
@@ -164,10 +170,10 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function cancelDocument(string $documentId, array $fields): HttpResponse
+    public function cancelDocument(string $documentId, CancelDocumentFields $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/cancel", $fields);
+            return $this->httpClient->post("documents/{$documentId}/cancel", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Erro ao cancelar o documento {$documentId}: " . $e->getMessage(),
