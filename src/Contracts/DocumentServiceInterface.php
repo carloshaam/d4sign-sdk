@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace D4Sign\Contracts;
 
 use D4Sign\Client\Contracts\HttpResponseInterface;
+use D4Sign\Data\HighlightFields;
+use D4Sign\Data\SendToSignersFields;
+use D4Sign\Data\UploadFields;
 
 /**
  * Interface para gerenciamento de documentos no serviço D4Sign.
@@ -41,52 +44,52 @@ interface DocumentServiceInterface
     /**
      * Lista documentos com base no status especificado.
      *
-     * @param string $statusId ID do status (por exemplo: pendente, assinado).
+     * @param string $statusId ID da posição (por exemplo: pendente, assinado).
      * @param int $page Número da página para paginação (padrão: 1).
      *
-     * @return HttpResponseInterface Retorna os documentos que correspondem ao status informado.
+     * @return HttpResponseInterface Retorna os documentos que correspondem à posição informado.
      */
     public function listDocumentsByStatus(string $statusId, int $page = 1): HttpResponseInterface;
 
     /**
      * Faz o upload de um novo documento para um cofre específico.
      *
-     * @param string $safeId ID do cofre.
-     * @param array $fields Dados do documento (nome, arquivo, etc.).
+     * @param string $safeId ID do cofre onde o documento será enviado.
+     * @param UploadFields $fields Objeto contendo os dados necessários para o upload.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o upload do documento.
      */
-    public function uploadDocumentToSafe(string $safeId, array $fields): HttpResponseInterface;
+    public function uploadDocumentToSafe(string $safeId, UploadFields $fields): HttpResponseInterface;
 
     /**
      * Faz o upload de um documento relacionado a um documento existente.
      *
-     * @param string $documentId ID do documento principal.
-     * @param array $fields Dados do documento relacionado.
+     * @param string $documentId ID do documento principal on o documento será enviado.
+     * @param UploadFields $fields Objeto contendo os dados necessários para o upload.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o upload.
      */
-    public function uploadRelatedDocument(string $documentId, array $fields): HttpResponseInterface;
+    public function uploadRelatedDocument(string $documentId, UploadFields $fields): HttpResponseInterface;
 
     /**
      * Adiciona um destaque em um documento.
      *
-     * @param string $documentId ID do documento.
-     * @param array $fields Dados do destaque (como posição, cor, etc.).
+     * @param string $documentId ID do documento ao qual será adicionado o destaque.
+     * @param HighlightFields $fields Objeto contendo os dados necessários para o destaque.
      *
      * @return HttpResponseInterface Retorna a resposta da API após a adição do destaque.
      */
-    public function addDocumentHighlight(string $documentId, array $fields): HttpResponseInterface;
+    public function addDocumentHighlight(string $documentId, HighlightFields $fields): HttpResponseInterface;
 
     /**
      * Envia um documento para os signatários.
      *
-     * @param string $documentId ID do documento.
-     * @param array $fields Dados para o envio, como e-mails dos signatários.
+     * @param string $documentId ID do documento a ser enviado.
+     * @param SendToSignersFields $fields Objeto contendo os dados necessários para envio aos signatários.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o envio.
      */
-    public function sendDocumentToSigners(string $documentId, array $fields): HttpResponseInterface;
+    public function sendDocumentToSigners(string $documentId, SendToSignersFields $fields): HttpResponseInterface;
 
     /**
      * Cancela um documento em processo de assinatura.

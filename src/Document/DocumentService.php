@@ -7,8 +7,10 @@ namespace D4Sign\Document;
 use D4Sign\Client\HttpClient;
 use D4Sign\Client\HttpResponse;
 use D4Sign\Contracts\DocumentServiceInterface;
+use D4Sign\Data\HighlightFields;
+use D4Sign\Data\SendToSignersFields;
+use D4Sign\Data\UploadFields;
 use D4Sign\Exceptions\D4SignConnectException;
-use D4Sign\Helpers\UploadHelper;
 
 /**
  * Implementação concreta de DocumentServiceInterface.
@@ -98,22 +100,10 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function uploadDocumentToSafe(string $safeId, array $fields): HttpResponse
+    public function uploadDocumentToSafe(string $safeId, UploadFields $fields): HttpResponse
     {
         try {
-            $file = UploadHelper::getFile($fields['file']);
-
-            $data = [
-                $file,
-                (function () use ($fields) {
-                    return [
-                        'name' => 'uuid_folder',
-                        'contents' => $fields['uuid_folder'] ?? null,
-                    ];
-                })(),
-            ];
-
-            return $this->httpClient->asMultipart()->post("documents/{$safeId}/upload", $data);
+            return $this->httpClient->asMultipart()->post("documents/{$safeId}/upload", $fields->toMultipart());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Erro ao enviar documento para o cofre {$safeId}: " . $e->getMessage(),
@@ -126,12 +116,10 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function uploadRelatedDocument(string $documentId, array $fields): HttpResponse
+    public function uploadRelatedDocument(string $documentId, UploadFields $fields): HttpResponse
     {
         try {
-            $data = UploadHelper::getFile($fields['file']);
-
-            return $this->httpClient->asMultipart()->post("documents/{$documentId}/uploadslave", $data);
+            return $this->httpClient->asMultipart()->post("documents/{$documentId}/uploadslave", $fields->toMultipart());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Erro ao enviar documento relacionado ao documento {$documentId}: " . $e->getMessage(),
@@ -144,10 +132,10 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function addDocumentHighlight(string $documentId, array $fields): HttpResponse
+    public function addDocumentHighlight(string $documentId, HighlightFields $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/addhighlight", $fields);
+            return $this->httpClient->post("documents/{$documentId}/addhighlight", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Erro ao adicionar destaque ao documento {$documentId}: " . $e->getMessage(),
@@ -160,10 +148,10 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function sendDocumentToSigners(string $documentId, array $fields): HttpResponse
+    public function sendDocumentToSigners(string $documentId, SendToSignersFields $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/sendtosigner", $fields);
+            return $this->httpClient->post("documents/{$documentId}/sendtosigner", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Erro ao enviar documento {$documentId} para os signatários: " . $e->getMessage(),
