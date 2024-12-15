@@ -15,6 +15,7 @@ interface SignatoryServiceInterface
      * Lista todos os signatários de um documento específico.
      *
      * @param string $documentId ID do documento.
+     *
      * @return HttpResponseInterface Resposta HTTP contendo a lista de signatários.
      */
     public function listSignatories(string $documentId): HttpResponseInterface;
@@ -23,6 +24,7 @@ interface SignatoryServiceInterface
      * Lista todos os grupos associados a um cofre específico.
      *
      * @param string $safeId ID do cofre.
+     *
      * @return HttpResponseInterface Resposta HTTP contendo a lista de grupos.
      */
     public function listGroupsBySafe(string $safeId): HttpResponseInterface;
@@ -32,6 +34,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados necessários para criar os signatários.
+     *
      * @return HttpResponseInterface Resposta HTTP contendo os dados dos signatários criados.
      */
     public function createSignatoryList(string $documentId, array $fields): HttpResponseInterface;
@@ -41,6 +44,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados contendo o novo e-mail do signatário.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da atualização.
      */
     public function updateSignatoryEmail(string $documentId, array $fields): HttpResponseInterface;
@@ -50,6 +54,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados contendo o novo número de SMS.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da atualização.
      */
     public function updateSignatorySMSNumber(string $documentId, array $fields): HttpResponseInterface;
@@ -59,6 +64,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados contendo o novo código de acesso.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da atualização.
      */
     public function updateSignatoryAccessCode(string $documentId, array $fields): HttpResponseInterface;
@@ -68,6 +74,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados necessários para identificar o signatário a ser removido.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da remoção.
      */
     public function removeSignatory(string $documentId, array $fields): HttpResponseInterface;
@@ -77,6 +84,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados contendo o PIN a ser adicionado.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da operação.
      */
     public function addMainDocumentPin(string $documentId, array $fields): HttpResponseInterface;
@@ -86,6 +94,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados necessários para identificar o PIN a ser removido.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da remoção.
      */
     public function removeMainDocumentPin(string $documentId, array $fields): HttpResponseInterface;
@@ -95,6 +104,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados adicionais para filtrar os resultados.
+     *
      * @return HttpResponseInterface Resposta HTTP contendo a lista de PINs.
      */
     public function listMainDocumentPins(string $documentId, array $fields): HttpResponseInterface;
@@ -104,6 +114,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados contendo as informações adicionais.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da operação.
      */
     public function addSignatoryInformation(string $documentId, array $fields): HttpResponseInterface;
@@ -113,6 +124,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados contendo o tipo de assinatura a ser definido.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da operação.
      */
     public function addSignatorySignatureType(string $documentId, array $fields): HttpResponseInterface;
@@ -123,6 +135,7 @@ interface SignatoryServiceInterface
      * @param string $documentId ID do documento.
      * @param string $groupId ID do grupo de signatários.
      * @param array $fields Dados adicionais para refinar os detalhes retornados.
+     *
      * @return HttpResponseInterface Resposta HTTP contendo os detalhes do grupo.
      */
     public function getSignatoryGroupDetails(string $documentId, string $groupId, array $fields): HttpResponseInterface;
@@ -132,6 +145,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param string $signatoryId ID do signatário.
+     *
      * @return HttpResponseInterface Resposta HTTP contendo o link de assinatura.
      */
     public function copySignatorySubscriptionLink(string $documentId, string $signatoryId): HttpResponseInterface;
@@ -141,6 +155,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados contendo as informações de replicação.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da operação.
      */
     public function replicateSignaturePosition(string $documentId, array $fields): HttpResponseInterface;
@@ -150,6 +165,7 @@ interface SignatoryServiceInterface
      *
      * @param string $documentId ID do documento.
      * @param array $fields Dados necessários para identificar as posições a serem removidas.
+     *
      * @return HttpResponseInterface Resposta HTTP com o status da remoção.
      */
     public function removeReplicatedSignaturePositions(string $documentId, array $fields): HttpResponseInterface;

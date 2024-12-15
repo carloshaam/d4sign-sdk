@@ -38,7 +38,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->get('safes');
         } catch (\Throwable $e) {
-            throw new D4SignConnectException('Erro ao listar as cofres: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                'Erro ao listar as cofres: ' . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 
@@ -50,7 +54,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->get("documents/{$safeId}/safe", ['pg' => $page]);
         } catch (\Throwable $e) {
-            throw new D4SignConnectException("Erro ao listar documentos do cofre {$safeId}: " . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                "Erro ao listar documentos do cofre {$safeId}: " . $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
         }
     }
 
@@ -62,7 +70,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->get("documents/{$safeId}/safe/{$folderId}", ['pg' => $page]);
         } catch (\Throwable $e) {
-            throw new D4SignConnectException("Erro ao listar documentos da pasta {$folderId} no cofre {$safeId}: " . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                "Erro ao listar documentos da pasta {$folderId} no cofre {$safeId}: " . $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
         }
     }
 
@@ -74,7 +86,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->get("folders/{$safeId}/find");
         } catch (\Throwable $e) {
-            throw new D4SignConnectException("Erro ao obter lista de pasta do cofre {$safeId}: " . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                "Erro ao obter lista de pasta do cofre {$safeId}: " . $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
         }
     }
 
@@ -86,7 +102,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->post("folders/{$safeId}/create", $fields);
         } catch (\Throwable $e) {
-            throw new D4SignConnectException("Erro ao criar pasta no cofre {$safeId}: " . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                "Erro ao criar pasta no cofre {$safeId}: " . $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
         }
     }
 
@@ -98,7 +118,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->post("folders/{$safeId}/rename", $fields);
         } catch (\Throwable $e) {
-            throw new D4SignConnectException("Erro ao renomear pasta no cofre {$safeId}: " . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                "Erro ao renomear pasta no cofre {$safeId}: " . $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
         }
     }
 
@@ -110,7 +134,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->post('batches', $fields);
         } catch (\Throwable $e) {
-            throw new D4SignConnectException('Erro ao criar documentos em lote: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                'Erro ao criar documentos em lote: ' . $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
         }
     }
 
@@ -122,7 +150,11 @@ class SafeService implements SafeServiceInterface
         try {
             return $this->httpClient->get('account/balance');
         } catch (\Throwable $e) {
-            throw new D4SignConnectException('Erro ao obter saldo da conta: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new D4SignConnectException(
+                'Erro ao obter saldo da conta: ' . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 }
