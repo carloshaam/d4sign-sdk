@@ -67,6 +67,8 @@ $safes = $d4sign->safes()->listSafes();
 Faça o upload de documentos, adicione arquivos e gerencie o status de documentos.
 
 ```php
+use D4Sign\Data\Data\UploadFields;
+
 $fields = new UploadFields($filePath);
 $fields->setUuidFolder('uuid-folder'); // optional
 
