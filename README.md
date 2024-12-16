@@ -57,7 +57,7 @@ $d4sign = new D4Sign('your_api_key', 'your_secret_key', 'your_api_url');
 Gerencie cofres, incluindo criação e visualização de cofres.
 
 ```php
-$safes = $d4sign->safes()->findAll();
+$safes = $d4sign->safes()->listSafes();
 ```
 
 [Documentação completa sobre Cofres em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Safe)
@@ -67,7 +67,12 @@ $safes = $d4sign->safes()->findAll();
 Faça o upload de documentos, adicione arquivos e gerencie o status de documentos.
 
 ```php
-$documents = $d4sign->documents()->uploadDocumentByIdSafe();
+$fields = new UploadFields($filePath);
+$fields->setUuidFolder('uuid-folder'); // optional
+
+$document = $d4sign->documents()->uploadDocumentToSafe('uuid-safe', $fields);
+
+echo print_r($document->json(), true);
 ````
 
 [Documentação completa sobre Documentos em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Document)
@@ -77,7 +82,7 @@ $documents = $d4sign->documents()->uploadDocumentByIdSafe();
 Adicione, remova e gerencie signatários de documentos.
 
 ```php
-$signatories = $d4sign->signatories()->findByDocumentId();
+$signatories = $d4sign->signatories()->listGroupsBySafe('uuid-safe');
 ````
 
 [Documentação completa sobre Signatários em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Signatory)
@@ -87,7 +92,7 @@ $signatories = $d4sign->signatories()->findByDocumentId();
 Gerencie usuários na sua conta D4Sign.
 
 ```php
-$users = $d4sign->users()->findAll();
+$users = $d4sign->users();
 ````
 
 [Documentação completa sobre Usuários em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/User)
@@ -97,7 +102,7 @@ $users = $d4sign->users()->findAll();
 Utilize e gerencie tags para personalizar seus documentos.
 
 ```php
-$tags = $d4sign->tags()->findByDocumentId();
+$tags = $d4sign->tags();
 ````
 
 [Documentação completa sobre Tags em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Tag)
@@ -107,7 +112,7 @@ $tags = $d4sign->tags()->findByDocumentId();
 Acesse e gerencie certificados de assinatura.
 
 ```php
-$certificates = $d4sign->certificates()->addByDocumentId();
+$certificates = $d4sign->certificates();
 ````
 
 [Documentação completa sobre Certificados em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Certificate)
@@ -117,7 +122,7 @@ $certificates = $d4sign->certificates()->addByDocumentId();
 Adicione observadores para acompanhar a assinatura de documentos.
 
 ```php
-$watchers = $d4sign->watchers()->removeByDocumentId();
+$watchers = $d4sign->watchers();
 ````
 
 [Documentação completa sobre Observadores em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Watcher)
@@ -127,7 +132,7 @@ $watchers = $d4sign->watchers()->removeByDocumentId();
 Cadastre webhook para acompanhar seus documentos.
 
 ```php
-$webhooks = $d4sign->webhooks()->create();
+$webhooks = $d4sign->webhooks();
 ````
 
 [Documentação completa sobre Webhooks em nossa Wiki](https://github.com/carloshaam/d4sign-sdk/wiki/Webhook)
