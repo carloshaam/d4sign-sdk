@@ -75,13 +75,13 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function listDocumentsByStatus(string $statusId, int $page = 1): HttpResponse
+    public function listDocumentsByPhase(int $statusId, int $page = 1): HttpResponse
     {
         try {
             return $this->httpClient->get("documents/{$statusId}/status", ['pg' => $page]);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error listing documents with status {$statusId}: " . $e->getMessage(),
+                "Error listing documents with phase {$statusId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );

@@ -67,7 +67,7 @@ class HttpCode
     public const NOT_EXTENDED = 510;
     public const NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-    public array $code = [
+    public const DESCRIPTIONS = [
         self::CONTINUE => 'Continue',
         self::SWITCHING_PROTOCOLS => 'Switching Protocols',
         self::PROCESSING => 'Processing',
@@ -134,10 +134,11 @@ class HttpCode
      * Method to fetch the description according to the HTTP code.
      *
      * @param int $httpCode Code HTTP.
+     *
      * @return string|null Code description if found, or null otherwise.
      */
     public function getDescription(int $httpCode): ?string
     {
-        return $this->code[$httpCode] ?? null;
+        return self::DESCRIPTIONS[$httpCode] ?? null;
     }
 }

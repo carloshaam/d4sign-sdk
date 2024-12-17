@@ -45,14 +45,14 @@ interface DocumentServiceInterface
     public function getDocumentDimensions(string $documentId): HttpResponseInterface;
 
     /**
-     * Lista documentos com base no status especificado.
+     * Lista documentos com base na fase especificada.
      *
-     * @param string $statusId ID da posição (por exemplo: pendente, assinado).
+     * @param int $statusId ID da fase.
      * @param int $page Número da página para paginação (padrão: 1).
      *
-     * @return HttpResponseInterface Retorna os documentos que correspondem à posição informado.
+     * @return HttpResponseInterface Retorna os documentos que correspondem à fase informada.
      */
-    public function listDocumentsByStatus(string $statusId, int $page = 1): HttpResponseInterface;
+    public function listDocumentsByPhase(int $statusId, int $page = 1): HttpResponseInterface;
 
     /**
      * Faz o upload de um novo documento para um cofre específico.
