@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Contracts;
+namespace D4Sign\Safe\Contracts;
 
 use D4Sign\Client\Contracts\HttpResponseInterface;
 

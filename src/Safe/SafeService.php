@@ -6,8 +6,8 @@ namespace D4Sign\Safe;
 
 use D4Sign\Client\HttpClient;
 use D4Sign\Client\HttpResponse;
-use D4Sign\Contracts\SafeServiceInterface;
 use D4Sign\Exceptions\D4SignConnectException;
+use D4Sign\Safe\Contracts\SafeServiceInterface;
 
 class SafeService implements SafeServiceInterface
 {
@@ -40,10 +40,10 @@ class SafeService implements SafeServiceInterface
     public function listDocumentsBySafe(string $safeId, int $page = 1): HttpResponse
     {
         try {
-            return $this->httpClient->get("documents/{$safeId}/safe", ['pg' => $page]);
+            return $this->httpClient->get("documents/$safeId/safe", ['pg' => $page]);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error listing documents from safe {$safeId}: " . $e->getMessage(),
+                "Error listing documents from safe $safeId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -56,10 +56,10 @@ class SafeService implements SafeServiceInterface
     public function listDocumentsBySafeAndFolder(string $safeId, string $folderId, int $page = 1): HttpResponse
     {
         try {
-            return $this->httpClient->get("documents/{$safeId}/safe/{$folderId}", ['pg' => $page]);
+            return $this->httpClient->get("documents/$safeId/safe/{$folderId}", ['pg' => $page]);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error listing documents from folder {$folderId} in safe {$safeId}: " . $e->getMessage(),
+                "Error listing documents from folder $folderId in safe $safeId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -72,10 +72,10 @@ class SafeService implements SafeServiceInterface
     public function listFolderBySafe(string $safeId): HttpResponse
     {
         try {
-            return $this->httpClient->get("folders/{$safeId}/find");
+            return $this->httpClient->get("folders/$safeId/find");
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error getting folder list from safe {$safeId}: " . $e->getMessage(),
+                "Error getting folder list from safe $safeId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -88,10 +88,10 @@ class SafeService implements SafeServiceInterface
     public function createFolder(string $safeId, array $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("folders/{$safeId}/create", $fields);
+            return $this->httpClient->post("folders/$safeId/create", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error creating folder in safe {$safeId}: " . $e->getMessage(),
+                "Error creating folder in safe $safeId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -104,10 +104,10 @@ class SafeService implements SafeServiceInterface
     public function renameFolder(string $safeId, array $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("folders/{$safeId}/rename", $fields);
+            return $this->httpClient->post("folders/$safeId/rename", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error renaming folder in safe {$safeId}: " . $e->getMessage(),
+                "Error renaming folder in safe $safeId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );

@@ -2,15 +2,9 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Contracts;
+namespace D4Sign\Document\Contracts;
 
 use D4Sign\Client\Contracts\HttpResponseInterface;
-use D4Sign\Data\Document\{
-    CancelDocumentFields,
-    HighlightFields,
-    SendToSignersFields,
-    UploadFields
-};
 
 /**
  * Interface para gerenciamento de documentos no serviço D4Sign.
@@ -58,51 +52,54 @@ interface DocumentServiceInterface
      * Faz o upload de um novo documento para um cofre específico.
      *
      * @param string $safeId ID do cofre onde o documento será enviado.
-     * @param UploadFields $fields Objeto contendo os dados necessários para o upload.
+     * @param UploadFieldsInterface $fields Objeto contendo os dados necessários para o upload.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o upload do documento.
      */
-    public function uploadDocumentToSafe(string $safeId, UploadFields $fields): HttpResponseInterface;
+    public function uploadDocumentToSafe(string $safeId, UploadFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Faz o upload de um documento relacionado a um documento existente.
      *
      * @param string $documentId ID do documento principal on o documento será enviado.
-     * @param UploadFields $fields Objeto contendo os dados necessários para o upload.
+     * @param UploadFieldsInterface $fields Objeto contendo os dados necessários para o upload.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o upload.
      */
-    public function uploadRelatedDocument(string $documentId, UploadFields $fields): HttpResponseInterface;
+    public function uploadRelatedDocument(string $documentId, UploadFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Adiciona um destaque em um documento.
      *
      * @param string $documentId ID do documento ao qual será adicionado o destaque.
-     * @param HighlightFields $fields Objeto contendo os dados necessários para o destaque.
+     * @param HighlightFieldsInterface $fields Objeto contendo os dados necessários para o destaque.
      *
      * @return HttpResponseInterface Retorna a resposta da API após a adição do destaque.
      */
-    public function addDocumentHighlight(string $documentId, HighlightFields $fields): HttpResponseInterface;
+    public function addDocumentHighlight(string $documentId, HighlightFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Envia um documento para os signatários.
      *
      * @param string $documentId ID do documento a ser enviado.
-     * @param SendToSignersFields $fields Objeto contendo os dados necessários para envio aos signatários.
+     * @param SendToSignersFieldsInterface $fields Objeto contendo os dados necessários para envio aos signatários.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o envio.
      */
-    public function sendDocumentToSigners(string $documentId, SendToSignersFields $fields): HttpResponseInterface;
+    public function sendDocumentToSigners(
+        string $documentId,
+        SendToSignersFieldsInterface $fields
+    ): HttpResponseInterface;
 
     /**
      * Cancela um documento em processo de assinatura.
      *
      * @param string $documentId ID do documento a ser cancelado.
-     * @param CancelDocumentFields $fields Objeto contendo os dados de cancelamento.
+     * @param CancelDocumentFieldsInterface $fields Objeto contendo os dados de cancelamento.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o cancelamento.
      */
-    public function cancelDocument(string $documentId, CancelDocumentFields $fields): HttpResponseInterface;
+    public function cancelDocument(string $documentId, CancelDocumentFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Faz o download de um documento.

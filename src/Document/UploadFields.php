@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Data\Document;
+namespace D4Sign\Document;
 
+use D4Sign\Document\Contracts\UploadFieldsInterface;
 use GuzzleHttp\Psr7\Utils;
 
-class UploadFields
+class UploadFields implements UploadFieldsInterface
 {
     private string $filePath;
-
     private ?string $uuidFolder = null;
-
     private ?string $customName = null;
-
     private array $metadata = [];
 
     /**
@@ -72,7 +70,7 @@ class UploadFields
      *
      * @return array Estrutura formatada.
      */
-    public function toMultipart(): array
+    public function toArray(): array
     {
         $data = [
             [

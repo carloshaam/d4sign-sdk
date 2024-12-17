@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Data\Document;
+namespace D4Sign\Document;
 
-class HighlightFields
+use D4Sign\Document\Contracts\HighlightFieldsInterface;
+
+class HighlightFields implements HighlightFieldsInterface
 {
     private string $email;
-
     private ?string $keySigner = null;
-
     private ?string $text = null;
 
     /**

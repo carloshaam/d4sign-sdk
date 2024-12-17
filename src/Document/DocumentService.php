@@ -6,12 +6,12 @@ namespace D4Sign\Document;
 
 use D4Sign\Client\HttpClient;
 use D4Sign\Client\HttpResponse;
-use D4Sign\Contracts\DocumentServiceInterface;
-use D4Sign\Data\Document\{
-    CancelDocumentFields,
-    HighlightFields,
-    SendToSignersFields,
-    UploadFields
+use D4Sign\Document\Contracts\{
+    CancelDocumentFieldsInterface,
+    DocumentServiceInterface,
+    HighlightFieldsInterface,
+    SendToSignersFieldsInterface,
+    UploadFieldsInterface
 };
 use D4Sign\Exceptions\D4SignConnectException;
 
@@ -46,10 +46,10 @@ class DocumentService implements DocumentServiceInterface
     public function getDocumentDetails(string $documentId): HttpResponse
     {
         try {
-            return $this->httpClient->get("documents/{$documentId}");
+            return $this->httpClient->get("documents/$documentId");
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error getting details for document {$documentId}: " . $e->getMessage(),
+                "Error getting details for document $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -62,10 +62,10 @@ class DocumentService implements DocumentServiceInterface
     public function getDocumentDimensions(string $documentId): HttpResponse
     {
         try {
-            return $this->httpClient->get("documents/{$documentId}/dimensions");
+            return $this->httpClient->get("documents/$documentId/dimensions");
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error getting dimensions of document {$documentId}: " . $e->getMessage(),
+                "Error getting dimensions of document $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -78,10 +78,10 @@ class DocumentService implements DocumentServiceInterface
     public function listDocumentsByPhase(int $statusId, int $page = 1): HttpResponse
     {
         try {
-            return $this->httpClient->get("documents/{$statusId}/status", ['pg' => $page]);
+            return $this->httpClient->get("documents/$statusId/status", ['pg' => $page]);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error listing documents with phase {$statusId}: " . $e->getMessage(),
+                "Error listing documents with phase $statusId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -91,13 +91,13 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function uploadDocumentToSafe(string $safeId, UploadFields $fields): HttpResponse
+    public function uploadDocumentToSafe(string $safeId, UploadFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->asMultipart()->post("documents/{$safeId}/upload", $fields->toMultipart());
+            return $this->httpClient->asMultipart()->post("documents/$safeId/upload", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error sending document to safe {$safeId}: " . $e->getMessage(),
+                "Error sending document to safe $safeId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -107,16 +107,16 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function uploadRelatedDocument(string $documentId, UploadFields $fields): HttpResponse
+    public function uploadRelatedDocument(string $documentId, UploadFieldsInterface $fields): HttpResponse
     {
         try {
             return $this->httpClient->asMultipart()->post(
-                "documents/{$documentId}/uploadslave",
-                $fields->toMultipart(),
+                "documents/$documentId/uploadslave",
+                $fields->toArray(),
             );
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error sending document related to document {$documentId}: " . $e->getMessage(),
+                "Error sending document related to document $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -126,13 +126,13 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function addDocumentHighlight(string $documentId, HighlightFields $fields): HttpResponse
+    public function addDocumentHighlight(string $documentId, HighlightFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/addhighlight", $fields->toArray());
+            return $this->httpClient->post("documents/$documentId/addhighlight", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error adding highlight to document {$documentId}: " . $e->getMessage(),
+                "Error adding highlight to document $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -142,13 +142,13 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function sendDocumentToSigners(string $documentId, SendToSignersFields $fields): HttpResponse
+    public function sendDocumentToSigners(string $documentId, SendToSignersFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/sendtosigner", $fields->toArray());
+            return $this->httpClient->post("documents/$documentId/sendtosigner", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error sending document {$documentId} to signers: " . $e->getMessage(),
+                "Error sending document $documentId to signers: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -158,13 +158,13 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function cancelDocument(string $documentId, CancelDocumentFields $fields): HttpResponse
+    public function cancelDocument(string $documentId, CancelDocumentFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/cancel", $fields->toArray());
+            return $this->httpClient->post("documents/$documentId/cancel", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error canceling document {$documentId}: " . $e->getMessage(),
+                "Error canceling document $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -177,10 +177,10 @@ class DocumentService implements DocumentServiceInterface
     public function downloadDocument(string $documentId, array $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/download", $fields);
+            return $this->httpClient->post("documents/$documentId/download", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error downloading document {$documentId}: " . $e->getMessage(),
+                "Error downloading document $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -193,10 +193,10 @@ class DocumentService implements DocumentServiceInterface
     public function resendDocumentToSigners(string $documentId, array $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/resend", $fields);
+            return $this->httpClient->post("documents/$documentId/resend", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error resending document {$documentId} to signers: " . $e->getMessage(),
+                "Error resending document $documentId to signers: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -225,10 +225,10 @@ class DocumentService implements DocumentServiceInterface
     public function createDocumentFromHtmlTemplate(string $documentId, array $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplate", $fields);
+            return $this->httpClient->post("documents/$documentId/makedocumentbytemplate", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error creating document from HTML template {$documentId}: " . $e->getMessage(),
+                "Error creating document from HTML template $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -241,10 +241,10 @@ class DocumentService implements DocumentServiceInterface
     public function createDocumentFromWordTemplate(string $documentId, array $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/makedocumentbytemplateword", $fields);
+            return $this->httpClient->post("documents/$documentId/makedocumentbytemplateword", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error creating document from Word template {$documentId}: " . $e->getMessage(),
+                "Error creating document from Word template $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -257,10 +257,10 @@ class DocumentService implements DocumentServiceInterface
     public function generateDocumentDownloadLink(string $documentId, array $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/{$documentId}/download", $fields);
+            return $this->httpClient->post("documents/$documentId/download", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error generating download link for document {$documentId}: " . $e->getMessage(),
+                "Error generating download link for document $documentId: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );

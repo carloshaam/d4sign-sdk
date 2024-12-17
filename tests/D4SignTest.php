@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use D4Sign\Contracts\DocumentServiceInterface;
-use D4Sign\Contracts\SafeServiceInterface;
 use D4Sign\D4Sign;
+use D4Sign\Document\Contracts\DocumentServiceInterface;
+use D4Sign\Safe\Contracts\SafeServiceInterface;
 use PHPUnit\Framework\TestCase;
 
 class D4SignTest extends TestCase

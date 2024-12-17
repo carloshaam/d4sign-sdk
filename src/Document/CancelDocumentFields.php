@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace D4Sign\Data\Document;
+namespace D4Sign\Document;
 
-class CancelDocumentFields
+use D4Sign\Document\Contracts\CancelDocumentFieldsInterface;
+
+class CancelDocumentFields implements CancelDocumentFieldsInterface
 {
     private string $comment;
 

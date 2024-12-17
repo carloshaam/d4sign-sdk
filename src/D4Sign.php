@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace D4Sign;
 
 use D4Sign\Certificate\CertificateService;
+use D4Sign\Certificate\Contracts\CertificateServiceInterface;
 use D4Sign\Client\D4SignClient;
-use D4Sign\Contracts\CertificateServiceInterface;
-use D4Sign\Contracts\DocumentServiceInterface;
-use D4Sign\Contracts\SafeServiceInterface;
-use D4Sign\Contracts\SignatoryServiceInterface;
-use D4Sign\Contracts\TagServiceInterface;
-use D4Sign\Contracts\UserServiceInterface;
-use D4Sign\Contracts\WatcherServiceInterface;
-use D4Sign\Contracts\WebhookServiceInterface;
+use D4Sign\Document\Contracts\DocumentServiceInterface;
 use D4Sign\Document\DocumentService;
 use D4Sign\Exceptions\D4SignInvalidArgumentException;
+use D4Sign\Safe\Contracts\SafeServiceInterface;
 use D4Sign\Safe\SafeService;
+use D4Sign\Signatory\Contracts\SignatoryServiceInterface;
 use D4Sign\Signatory\SignatoryService;
+use D4Sign\Tag\Contracts\TagServiceInterface;
 use D4Sign\Tag\TagService;
+use D4Sign\User\Contracts\UserServiceInterface;
 use D4Sign\User\UserService;
+use D4Sign\Watcher\Contracts\WatcherServiceInterface;
 use D4Sign\Watcher\WatcherService;
+use D4Sign\Webhook\Contracts\WebhookServiceInterface;
 use D4Sign\Webhook\WebhookService;
 
 class D4Sign
