@@ -11,16 +11,8 @@ use D4Sign\Exceptions\D4SignConnectException;
 
 class SignatoryService implements SignatoryServiceInterface
 {
-    /**
-     * @var HttpClient Cliente HTTP utilizado para interagir com a API.
-     */
     private HttpClient $httpClient;
 
-    /**
-     * Construtor da classe.
-     *
-     * @param HttpClient $httpClient Instância do cliente HTTP.
-     */
     public function __construct(HttpClient $httpClient)
     {
         $this->httpClient = $httpClient;
@@ -35,7 +27,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->get("documents/{$documentId}/list");
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao listar signatários para o documento {$documentId}: " . $e->getMessage(),
+                "Error listing signers for document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -51,7 +43,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->get("groups/{$safeId}");
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao listar grupos para o cofre {$safeId}: " . $e->getMessage(),
+                "Error listing groups for safe {$safeId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -67,7 +59,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/createlist", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao criar lista de signatários para o documento {$documentId}: " . $e->getMessage(),
+                "Error creating signer list for document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -83,7 +75,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/changeemail", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao atualizar o e-mail do signatário no documento {$documentId}: " . $e->getMessage(),
+                "Error updating signer email in document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -99,7 +91,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/changesmsnumber", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao atualizar o número de SMS do signatário no documento {$documentId}: " . $e->getMessage(),
+                "Error updating signer's SMS number in document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -115,7 +107,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/changepasswordcode", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao atualizar o código de acesso do signatário no documento {$documentId}: " . $e->getMessage(),
+                "Error updating signer access code in document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -131,7 +123,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/removeemaillist", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao remover o signatário do documento {$documentId}: " . $e->getMessage(), $e->getCode(), $e,
+                "Error removing signer from document {$documentId}: " . $e->getMessage(), $e->getCode(), $e,
             );
         }
     }
@@ -145,7 +137,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/addpins", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao adicionar PIN ao documento {$documentId}: " . $e->getMessage(),
+                "Error adding PIN to document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -161,7 +153,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/removepins", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao remover PIN do documento {$documentId}: " . $e->getMessage(),
+                "Error removing PIN from document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -177,7 +169,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/listpins", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao listar PINs do documento {$documentId}: " . $e->getMessage(),
+                "Error listing PINs for document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -193,7 +185,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/addinfo", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao adicionar informações ao signatário do documento {$documentId}: " . $e->getMessage(),
+                "Error adding information for signer of document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -209,7 +201,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/addsignaturetype", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao adicionar tipo de assinatura ao signatário no documento {$documentId}: " . $e->getMessage(),
+                "Error adding signature type to signer in document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -225,7 +217,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/groupdetails/{$groupId}", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao obter detalhes do grupo de signatários no documento {$documentId}: " . $e->getMessage(),
+                "Error getting signer group details on document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -241,8 +233,9 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/signaturelink/{$signatoryId}");
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao copiar o link de assinatura do signatário {$signatoryId} no documento {$documentId}: " . $e->getMessage(
-                ), $e->getCode(), $e,
+                "Error copying signature link from signatory {$signatoryId} into document {$documentId}: " . $e->getMessage(),
+                $e->getCode(),
+                $e,
             );
         }
     }
@@ -256,7 +249,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/addpinswithreplics", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao replicar a posição de assinatura no documento {$documentId}: " . $e->getMessage(),
+                "Error replicating signature position in document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
@@ -272,7 +265,7 @@ class SignatoryService implements SignatoryServiceInterface
             return $this->httpClient->post("documents/{$documentId}/removepinswithreplics", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Erro ao remover posições de assinatura replicadas no documento {$documentId}: " . $e->getMessage(),
+                "Error removing replicated signature positions in document {$documentId}: " . $e->getMessage(),
                 $e->getCode(),
                 $e,
             );

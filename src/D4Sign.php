@@ -26,9 +26,7 @@ use D4Sign\Webhook\WebhookService;
 class D4Sign
 {
     private const DEFAULT_BASE_URL = 'https://sandbox.d4sign.com.br/api/v1';
-
     private D4SignClient $client;
-
     private array $services = [];
 
     public function __construct(

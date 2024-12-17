@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace D4Sign\Client;
 
 use D4Sign\Client\Contracts\HttpClientInterface;
+use D4Sign\Exceptions\D4SginUnauthorizedException;
 use D4Sign\Exceptions\D4SignHttpClientException;
+use D4Sign\Utils\HttpCode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 class HttpClient implements HttpClientInterface
 {
     private Client $client;
-
     private array $options;
-
     private string $bodyFormat;
-
     private array $defaultOptions;
 
     public function __construct(array $config = [])
@@ -220,6 +219,10 @@ class HttpClient implements HttpClientInterface
                 $uri,
                 $this->mergeOptions(['query' => $query], $options),
             );
+
+            if ($response->getStatusCode() === HttpCode::UNAUTHORIZED) {
+                throw new D4SginUnauthorizedException('Invalid or expired API key.');
+            }
 
             return new HttpResponse(
                 $response->getStatusCode(),
