@@ -7,7 +7,13 @@ namespace D4Sign\Signatory;
 use D4Sign\Client\HttpClient;
 use D4Sign\Client\HttpResponse;
 use D4Sign\Exceptions\D4SignConnectException;
+use D4Sign\Signatory\Contracts\CreateSignatoryInformationFieldsInterface;
+use D4Sign\Signatory\Contracts\ListSignatoriesFieldsInterface;
+use D4Sign\Signatory\Contracts\RemoveSignatoryFieldsInterface;
 use D4Sign\Signatory\Contracts\SignatoryServiceInterface;
+use D4Sign\Signatory\Contracts\UpdateSignatoryAccessCodeFieldsInterface;
+use D4Sign\Signatory\Contracts\UpdateSignatoryEmailFieldsInterface;
+use D4Sign\Signatory\Contracts\UpdateSignatorySmsNumberFieldsInterface;
 
 class SignatoryService implements SignatoryServiceInterface
 {
@@ -53,10 +59,10 @@ class SignatoryService implements SignatoryServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function createSignatoryList(string $documentId, array $fields): HttpResponse
+    public function createSignatoryList(string $documentId, ListSignatoriesFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/$documentId/createlist", $fields);
+            return $this->httpClient->post("documents/$documentId/createlist", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Error creating signer list for document $documentId: " . $e->getMessage(),
@@ -69,10 +75,10 @@ class SignatoryService implements SignatoryServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function updateSignatoryEmail(string $documentId, array $fields): HttpResponse
+    public function updateSignatoryEmail(string $documentId, UpdateSignatoryEmailFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/$documentId/changeemail", $fields);
+            return $this->httpClient->post("documents/$documentId/changeemail", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Error updating signer email in document $documentId: " . $e->getMessage(),
@@ -85,10 +91,10 @@ class SignatoryService implements SignatoryServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function updateSignatorySMSNumber(string $documentId, array $fields): HttpResponse
+    public function updateSignatorySMSNumber(string $documentId, UpdateSignatorySmsNumberFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/$documentId/changesmsnumber", $fields);
+            return $this->httpClient->post("documents/$documentId/changesmsnumber", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Error updating signer's SMS number in document $documentId: " . $e->getMessage(),
@@ -101,10 +107,10 @@ class SignatoryService implements SignatoryServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function updateSignatoryAccessCode(string $documentId, array $fields): HttpResponse
+    public function updateSignatoryAccessCode(string $documentId, UpdateSignatoryAccessCodeFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/$documentId/changepasswordcode", $fields);
+            return $this->httpClient->post("documents/$documentId/changepasswordcode", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Error updating signer access code in document $documentId: " . $e->getMessage(),
@@ -117,13 +123,15 @@ class SignatoryService implements SignatoryServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function removeSignatory(string $documentId, array $fields): HttpResponse
+    public function removeSignatory(string $documentId, RemoveSignatoryFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/$documentId/removeemaillist", $fields);
+            return $this->httpClient->post("documents/$documentId/removeemaillist", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
-                "Error removing signer from document $documentId: " . $e->getMessage(), $e->getCode(), $e,
+                "Error removing signer from document $documentId: " . $e->getMessage(),
+                $e->getCode(),
+                $e,
             );
         }
     }
@@ -179,10 +187,10 @@ class SignatoryService implements SignatoryServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function addSignatoryInformation(string $documentId, array $fields): HttpResponse
+    public function addSignatoryInformation(string $documentId, CreateSignatoryInformationFieldsInterface $fields): HttpResponse
     {
         try {
-            return $this->httpClient->post("documents/$documentId/addinfo", $fields);
+            return $this->httpClient->post("documents/$documentId/addinfo", $fields->toArray());
         } catch (\Throwable $e) {
             throw new D4SignConnectException(
                 "Error adding information for signer of document $documentId: " . $e->getMessage(),

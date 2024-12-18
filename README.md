@@ -150,6 +150,11 @@ Para uma visão completa de todas as funções e parâmetros, consulte a [docume
 
 - [Documentação Oficial](https://docapi.d4sign.com.br)
 
+## Roadmap
+
+- Implementar todos os métodos públicos da API da D4Sign (Em desenvolvimento)
+- Implementar testes unitarios (Pendente)
+
 ## Contribuição
 
 Contribuições são bem-vindas! Siga estas etapas para contribuir:
@@ -163,3 +168,7 @@ Contribuições são bem-vindas! Siga estas etapas para contribuir:
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](#).
+
+## Disclaimer
+
+Esse projeto não tem vínculo algum com a empresa D4Sign, trata-se apenas de uma sdk para facilitar o consumo da api do mesmo.

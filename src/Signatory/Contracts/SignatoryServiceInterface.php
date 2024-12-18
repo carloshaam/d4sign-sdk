@@ -33,51 +33,51 @@ interface SignatoryServiceInterface
      * Cria uma lista de signatários para um documento.
      *
      * @param string $documentId ID do documento.
-     * @param array $fields Dados necessários para criar os signatários.
+     * @param ListSignatoriesFieldsInterface $fields Dados necessários para criar os signatários.
      *
      * @return HttpResponseInterface Resposta HTTP contendo os dados dos signatários criados.
      */
-    public function createSignatoryList(string $documentId, array $fields): HttpResponseInterface;
+    public function createSignatoryList(string $documentId, ListSignatoriesFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Atualiza o e-mail de um signatário em um documento.
      *
      * @param string $documentId ID do documento.
-     * @param array $fields Dados contendo o novo e-mail do signatário.
+     * @param UpdateSignatoryEmailFieldsInterface $fields Dados contendo o novo e-mail do signatário.
      *
      * @return HttpResponseInterface Resposta HTTP com o status da atualização.
      */
-    public function updateSignatoryEmail(string $documentId, array $fields): HttpResponseInterface;
+    public function updateSignatoryEmail(string $documentId, UpdateSignatoryEmailFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Atualiza o número de SMS de um signatário em um documento.
      *
      * @param string $documentId ID do documento.
-     * @param array $fields Dados contendo o novo número de SMS.
+     * @param UpdateSignatorySmsNumberFieldsInterface $fields Dados contendo o novo número de SMS.
      *
      * @return HttpResponseInterface Resposta HTTP com o status da atualização.
      */
-    public function updateSignatorySMSNumber(string $documentId, array $fields): HttpResponseInterface;
+    public function updateSignatorySMSNumber(string $documentId, UpdateSignatorySmsNumberFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Atualiza o código de acesso de um signatário em um documento.
      *
      * @param string $documentId ID do documento.
-     * @param array $fields Dados contendo o novo código de acesso.
+     * @param UpdateSignatoryAccessCodeFieldsInterface $fields Dados contendo o novo código de acesso.
      *
      * @return HttpResponseInterface Resposta HTTP com o status da atualização.
      */
-    public function updateSignatoryAccessCode(string $documentId, array $fields): HttpResponseInterface;
+    public function updateSignatoryAccessCode(string $documentId, UpdateSignatoryAccessCodeFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Remove um signatário de um documento.
      *
      * @param string $documentId ID do documento.
-     * @param array $fields Dados necessários para identificar o signatário a ser removido.
+     * @param RemoveSignatoryFieldsInterface $fields Dados necessários para identificar o signatário a ser removido.
      *
      * @return HttpResponseInterface Resposta HTTP com o status da remoção.
      */
-    public function removeSignatory(string $documentId, array $fields): HttpResponseInterface;
+    public function removeSignatory(string $documentId, RemoveSignatoryFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Adiciona um PIN principal a um documento.
@@ -113,11 +113,11 @@ interface SignatoryServiceInterface
      * Adiciona informações ao signatário de um documento.
      *
      * @param string $documentId ID do documento.
-     * @param array $fields Dados contendo as informações adicionais.
+     * @param CreateSignatoryInformationFieldsInterface $fields Dados contendo as informações adicionais.
      *
      * @return HttpResponseInterface Resposta HTTP com o status da operação.
      */
-    public function addSignatoryInformation(string $documentId, array $fields): HttpResponseInterface;
+    public function addSignatoryInformation(string $documentId, CreateSignatoryInformationFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Define o tipo de assinatura de um signatário em um documento.
