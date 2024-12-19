@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace D4Sign\Document\Contracts;
 
-interface UploadFieldsInterface
+interface UploadDocumentFieldsInterface
 {
     /**
      * Converte os dados para uma estrutura compatível com a API.

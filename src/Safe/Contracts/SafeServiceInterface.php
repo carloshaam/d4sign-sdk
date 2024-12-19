@@ -56,11 +56,11 @@ interface SafeServiceInterface
      * Cria uma nova pasta dentro de um cofre.
      *
      * @param string $safeId ID do cofre onde a pasta será criada.
-     * @param array $fields Dados necessários para a criação da pasta.
+     * @param CreateFolderFieldsInterface $fields Dados necessários para a criação da pasta.
      *
      * @return HttpResponseInterface Retorna a resposta da API após a criação da pasta.
      */
-    public function createFolder(string $safeId, array $fields): HttpResponseInterface;
+    public function createFolder(string $safeId, CreateFolderFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Renomeia uma pasta existente num cofre.

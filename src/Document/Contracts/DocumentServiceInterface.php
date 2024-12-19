@@ -52,21 +52,21 @@ interface DocumentServiceInterface
      * Faz o upload de um novo documento para um cofre específico.
      *
      * @param string $safeId ID do cofre onde o documento será enviado.
-     * @param UploadFieldsInterface $fields Objeto contendo os dados necessários para o upload.
+     * @param UploadDocumentFieldsInterface $fields Objeto contendo os dados necessários para o upload.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o upload do documento.
      */
-    public function uploadDocumentToSafe(string $safeId, UploadFieldsInterface $fields): HttpResponseInterface;
+    public function uploadDocumentToSafe(string $safeId, UploadDocumentFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Faz o upload de um documento relacionado a um documento existente.
      *
      * @param string $documentId ID do documento principal on o documento será enviado.
-     * @param UploadFieldsInterface $fields Objeto contendo os dados necessários para o upload.
+     * @param UploadDocumentFieldsInterface $fields Objeto contendo os dados necessários para o upload.
      *
      * @return HttpResponseInterface Retorna a resposta da API após o upload.
      */
-    public function uploadRelatedDocument(string $documentId, UploadFieldsInterface $fields): HttpResponseInterface;
+    public function uploadRelatedDocument(string $documentId, UploadDocumentFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Adiciona um destaque em um documento.
@@ -105,11 +105,11 @@ interface DocumentServiceInterface
      * Faz o download de um documento.
      *
      * @param string $documentId ID do documento.
-     * @param array $fields Configurações do download (como formato ou opções adicionais).
+     * @param DownloadDocumentFieldsInterface|null $fields Configurações do download (como formato ou opções adicionais).
      *
      * @return HttpResponseInterface Retorna o conteúdo do documento em binário ou base64.
      */
-    public function downloadDocument(string $documentId, array $fields): HttpResponseInterface;
+    public function downloadDocument(string $documentId, ?DownloadDocumentFieldsInterface $fields): HttpResponseInterface;
 
     /**
      * Reenvia o documento para os signatários.

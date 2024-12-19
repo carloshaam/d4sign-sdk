@@ -9,9 +9,10 @@ use D4Sign\Client\HttpResponse;
 use D4Sign\Document\Contracts\{
     CancelDocumentFieldsInterface,
     DocumentServiceInterface,
+    DownloadDocumentFieldsInterface,
     HighlightFieldsInterface,
     SendToSignersFieldsInterface,
-    UploadFieldsInterface
+    UploadDocumentFieldsInterface
 };
 use D4Sign\Exceptions\D4SignConnectException;
 
@@ -91,7 +92,7 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function uploadDocumentToSafe(string $safeId, UploadFieldsInterface $fields): HttpResponse
+    public function uploadDocumentToSafe(string $safeId, UploadDocumentFieldsInterface $fields): HttpResponse
     {
         try {
             return $this->httpClient->asMultipart()->post("documents/$safeId/upload", $fields->toArray());
@@ -107,7 +108,7 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function uploadRelatedDocument(string $documentId, UploadFieldsInterface $fields): HttpResponse
+    public function uploadRelatedDocument(string $documentId, UploadDocumentFieldsInterface $fields): HttpResponse
     {
         try {
             return $this->httpClient->asMultipart()->post(
@@ -174,9 +175,11 @@ class DocumentService implements DocumentServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function downloadDocument(string $documentId, array $fields): HttpResponse
+    public function downloadDocument(string $documentId, DownloadDocumentFieldsInterface $fields = null): HttpResponse
     {
         try {
+            $fields = $fields ? $fields->toArray() : [];
+
             return $this->httpClient->post("documents/$documentId/download", $fields);
         } catch (\Throwable $e) {
             throw new D4SignConnectException(

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace D4Sign\Document;
 
-use D4Sign\Document\Contracts\UploadFieldsInterface;
+use D4Sign\Document\Contracts\UploadDocumentFieldsInterface;
 use GuzzleHttp\Psr7\Utils;
 
-class UploadFields implements UploadFieldsInterface
+class UploadDocumentFields implements UploadDocumentFieldsInterface
 {
     private string $filePath;
     private ?string $uuidFolder = null;
