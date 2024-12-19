@@ -64,12 +64,12 @@ $safes = $d4sign->safes()->listSafes();
 
 ## Documentos
 
-Faça o upload de documentos, adicione arquivos e gerencie o status de documentos.
+Faça o upload de documentos, adicione arquivos e gerencie a fase dos documentos.
 
 ```php
-use D4Sign\Data\UploadFields;
+use D4Sign\Document\UploadDocumentFields;
 
-$fields = new UploadFields($filePath);
+$fields = new UploadDocumentFields($filePath);
 $fields->setUuidFolder('uuid-folder'); // optional
 
 $document = $d4sign->documents()->uploadDocumentToSafe('uuid-safe', $fields);
